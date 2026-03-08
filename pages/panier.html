@@ -48,23 +48,46 @@
         .nav-panier { background: var(--blue); color: var(--white) !important; padding: 8px 20px; border-radius: 2px; }
         .nav-panier:hover { background: var(--blue-dark) !important; }
 
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); transition: all 0.3s ease; }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px; left: 0; right: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 20px 0;
+            z-index: 99;
+            flex-direction: column;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { text-decoration: none; color: var(--gray); font-size: 1rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 16px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--white); }
+        .mobile-menu .mobile-panier { margin: 16px 30px 6px; background: var(--blue); color: var(--white) !important; text-align: center; padding: 16px; border-bottom: none; border-radius: 2px; }
+
         .page-hero {
             padding: 120px 60px 60px;
             background: linear-gradient(135deg, #0a0a0a 0%, #0d1a5e 60%, #0a0a0a 100%);
             position: relative;
             overflow: hidden;
         }
-
         .page-hero::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
             background-size: 60px 60px;
         }
-
         .page-hero-content { position: relative; z-index: 1; }
         .page-tag { display: inline-block; background: var(--blue); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 14px; margin-bottom: 16px; }
         .page-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); letter-spacing: 3px; line-height: 1; }
@@ -113,6 +136,7 @@
         .mode-btn { display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 16px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); color: var(--white); cursor: pointer; margin-bottom: 8px; transition: border-color 0.2s, background 0.2s; font-family: 'Barlow', sans-serif; text-align: left; }
         .mode-btn:hover, .mode-btn.selected { border-color: var(--blue); background: rgba(26,62,245,0.08); }
         .mode-logo { width: 60px; height: 60px; object-fit: contain; border-radius: 8px; flex-shrink: 0; background: #fff; padding: 4px; }
+        .mode-icon { width: 60px; height: 60px; border-radius: 8px; flex-shrink: 0; background: rgba(26,62,245,0.15); border: 1px solid rgba(26,62,245,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
         .mode-label { font-size: 0.85rem; font-weight: 700; }
         .mode-sub { font-size: 0.72rem; color: var(--gray); }
 
@@ -121,51 +145,25 @@
         .form-paiement input:focus { border-color: var(--blue); }
         .form-paiement input::placeholder { color: rgba(255,255,255,0.2); }
 
-        /* ── GPS BOUTON ── */
-        .gps-bloc {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .gps-bloc input {
-            flex: 1;
-            margin-bottom: 0 !important;
-        }
-
-        .btn-gps {
-            padding: 0 14px;
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            border-radius: 2px;
-            transition: background 0.2s;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        .gps-bloc { display: flex; gap: 8px; margin-bottom: 10px; }
+        .gps-bloc input { flex: 1; margin-bottom: 0 !important; }
+        .btn-gps { padding: 0 14px; background: var(--blue); color: #fff; border: none; cursor: pointer; font-size: 1.2rem; border-radius: 2px; transition: background 0.2s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .btn-gps:hover { background: var(--blue-dark); }
-
         .btn-gps.loading { background: var(--gray); cursor: wait; }
 
-        .gps-status {
-            font-size: 0.75rem;
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            border-radius: 2px;
-            display: none;
-        }
-
+        .gps-status { font-size: 0.75rem; margin-bottom: 10px; padding: 8px 12px; border-radius: 2px; display: none; }
         .gps-status.ok { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #4ade80; display: block; }
         .gps-status.err { background: rgba(255,45,45,0.1); border: 1px solid rgba(255,45,45,0.3); color: #ff6b6b; display: block; }
 
         .btn-wave-payer { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: #00AAFF; color: #fff; border: none; font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 6px; transition: background 0.2s, transform 0.2s; border-radius: 2px; }
         .btn-wave-payer:hover { background: #0088cc; transform: translateY(-2px); }
         .btn-wave-payer img { width: 26px; height: 26px; object-fit: contain; border-radius: 4px; }
+
+        .livraison-info { background: rgba(255,165,0,0.08); border: 1px solid rgba(255,165,0,0.25); padding: 14px 16px; margin-bottom: 14px; font-size: 0.82rem; color: rgba(245,245,240,0.8); line-height: 1.6; }
+        .livraison-info strong { color: #FFB347; }
+
+        .btn-livraison-payer { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: #1a7a1a; color: #fff; border: none; font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 6px; transition: background 0.2s, transform 0.2s; border-radius: 2px; }
+        .btn-livraison-payer:hover { background: #145e14; transform: translateY(-2px); }
 
         .info-montant { background: rgba(26,62,245,0.1); border: 1px solid rgba(26,62,245,0.25); padding: 12px 14px; margin-bottom: 12px; font-size: 0.82rem; color: rgba(245,245,240,0.75); line-height: 1.5; }
         .info-montant strong { color: var(--white); }
@@ -183,7 +181,15 @@
         .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 4px; color: rgba(255,255,255,0.3); }
 
         @media (max-width: 900px) { .panier-layout { grid-template-columns: 1fr; } .panier-resume { position: static; } }
-        @media (max-width: 768px) { header { padding: 0 20px; } header h1 { font-size: 1.4rem; } nav ul { gap: 16px; } .nav-panier { display: none; } .page-hero { padding: 100px 24px 40px; } .panier-section { padding: 40px 16px; } footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; } }
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            header h1 { font-size: 1.4rem; }
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .page-hero { padding: 100px 24px 40px; }
+            .panier-section { padding: 40px 16px; }
+            footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -198,7 +204,17 @@
                 <li><a href="panier.html" class="nav-panier active">🛒 Panier</a></li>
             </ul>
         </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
     </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="accueil.html">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="contact.html">Contact</a>
+        <a href="panier.html" class="mobile-panier">🛒 Panier</a>
+    </div>
 
     <div class="page-hero">
         <div class="page-hero-content">
@@ -222,6 +238,13 @@
 
         let panierData = localStorage.getItem('panier');
         let panier = panierData ? JSON.parse(panierData) : [];
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            menu.classList.toggle('open');
+            hamburger.classList.toggle('open');
+        }
 
         function rendu() {
             const contenu = document.getElementById('contenu');
@@ -286,24 +309,44 @@
                         </div>
                     </button>
 
+                    <button class="mode-btn" id="btn-livraison" onclick="choisir('livraison')">
+                        <div class="mode-icon">💵</div>
+                        <div>
+                            <p class="mode-label" style="color:#4ade80;">Paiement à la livraison</p>
+                            <p class="mode-sub">Payez en cash à la réception</p>
+                        </div>
+                    </button>
+
                     <div class="form-paiement" id="form-wave">
                         <div class="info-montant">
                             ✅ Vous allez être redirigé vers <strong>Wave</strong> pour payer <strong>${totalFormate} Fr CFA</strong> en toute sécurité.
                         </div>
-
                         <input id="nom-wave" type="text" placeholder="Votre nom complet">
                         <input id="tel-wave" type="tel" placeholder="Votre numéro de téléphone">
-
-                        <!-- CHAMP ADRESSE + BOUTON GPS -->
                         <div class="gps-bloc">
                             <input id="adresse-wave" type="text" placeholder="Adresse de livraison">
-                            <button class="btn-gps" id="btn-gps" onclick="detecterPosition()" title="Détecter ma position GPS">📍</button>
+                            <button class="btn-gps" id="btn-gps-wave" onclick="detecterPosition('wave')" title="Détecter ma position GPS">📍</button>
                         </div>
-                        <div class="gps-status" id="gps-status"></div>
-
+                        <div class="gps-status" id="gps-status-wave"></div>
                         <button class="btn-wave-payer" onclick="payerWave(${total})">
                             <img src="../images/wave.jpeg" alt="Wave">
                             Payer ${totalFormate} Fr CFA avec Wave
+                        </button>
+                    </div>
+
+                    <div class="form-paiement" id="form-livraison">
+                        <div class="livraison-info">
+                            💵 Vous paierez <strong>${totalFormate} Fr CFA en cash</strong> directement au livreur à la réception. Aucun paiement en avance requis.
+                        </div>
+                        <input id="nom-livraison" type="text" placeholder="Votre nom complet">
+                        <input id="tel-livraison" type="tel" placeholder="Votre numéro de téléphone">
+                        <div class="gps-bloc">
+                            <input id="adresse-livraison" type="text" placeholder="Adresse de livraison">
+                            <button class="btn-gps" id="btn-gps-livraison" onclick="detecterPosition('livraison')" title="Détecter ma position GPS">📍</button>
+                        </div>
+                        <div class="gps-status" id="gps-status-livraison"></div>
+                        <button class="btn-livraison-payer" onclick="confirmerLivraison(${total})">
+                            ✅ Confirmer — Payer à la livraison
                         </button>
                     </div>
 
@@ -318,44 +361,31 @@
             </div>`;
         }
 
-        // ══════════════════════════════════════════
-        //  GPS — Détection automatique de position
-        // ══════════════════════════════════════════
-        function detecterPosition() {
-            const btn    = document.getElementById('btn-gps');
-            const status = document.getElementById('gps-status');
-            const input  = document.getElementById('adresse-wave');
-
+        function detecterPosition(mode) {
+            const btn    = document.getElementById('btn-gps-' + mode);
+            const status = document.getElementById('gps-status-' + mode);
+            const input  = document.getElementById('adresse-' + mode);
             if (!navigator.geolocation) {
                 status.className = 'gps-status err';
-                status.textContent = '❌ GPS non supporté sur ce navigateur.';
+                status.textContent = '❌ GPS non supporté.';
                 return;
             }
-
             btn.classList.add('loading');
             btn.textContent = '⏳';
-            status.className = 'gps-status';
-            status.textContent = '';
-
             navigator.geolocation.getCurrentPosition(
                 async (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
-
-                    // Reverse geocoding gratuit avec OpenStreetMap (pas besoin de clé API)
+                    const { latitude: lat, longitude: lng } = pos.coords;
                     try {
                         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
                         const data = await res.json();
-                        const adresse = data.display_name || `${lat}, ${lng}`;
-                        input.value = adresse;
+                        input.value = data.display_name || `${lat}, ${lng}`;
                         status.className = 'gps-status ok';
-                        status.textContent = '✅ Position détectée avec succès !';
-                    } catch (e) {
+                        status.textContent = '✅ Position détectée !';
+                    } catch {
                         input.value = `${lat}, ${lng}`;
                         status.className = 'gps-status ok';
                         status.textContent = '✅ Coordonnées GPS récupérées !';
                     }
-
                     btn.classList.remove('loading');
                     btn.textContent = '📍';
                 },
@@ -363,11 +393,7 @@
                     btn.classList.remove('loading');
                     btn.textContent = '📍';
                     status.className = 'gps-status err';
-                    if (err.code === 1) {
-                        status.textContent = '❌ Accès GPS refusé. Autorisez la localisation dans votre navigateur.';
-                    } else {
-                        status.textContent = '❌ Impossible de détecter la position. Entrez l\'adresse manuellement.';
-                    }
+                    status.textContent = err.code === 1 ? '❌ Accès GPS refusé.' : '❌ Position introuvable.';
                 },
                 { timeout: 10000, enableHighAccuracy: true }
             );
@@ -378,17 +404,40 @@
             document.querySelectorAll('.form-paiement').forEach(f => f.style.display = 'none');
             document.getElementById('btn-' + mode).classList.add('selected');
             document.getElementById('form-' + mode).style.display = 'block';
+            document.getElementById('succes').style.display = 'none';
         }
 
         function payerWave(total) {
             const nom     = document.getElementById('nom-wave').value.trim();
             const tel     = document.getElementById('tel-wave').value.trim();
             const adresse = document.getElementById('adresse-wave').value.trim();
-            if (!nom || !tel || !adresse) { alert('⚠️ Veuillez remplir tous les champs avant de payer !'); return; }
+            if (!nom || !tel || !adresse) { alert('⚠️ Veuillez remplir tous les champs !'); return; }
             localStorage.setItem('derniereCommande', JSON.stringify({ nom, tel, adresse, total, articles: panier, mode: 'Wave', date: new Date().toLocaleString() }));
             localStorage.removeItem('panier');
             panier = [];
             window.location.href = `${WAVE_LINK}?amount=${total}`;
+        }
+
+        function confirmerLivraison(total) {
+            const nom     = document.getElementById('nom-livraison').value.trim();
+            const tel     = document.getElementById('tel-livraison').value.trim();
+            const adresse = document.getElementById('adresse-livraison').value.trim();
+            if (!nom || !tel || !adresse) { alert('⚠️ Veuillez remplir tous les champs !'); return; }
+            localStorage.setItem('derniereCommande', JSON.stringify({ nom, tel, adresse, total, articles: panier, mode: 'Paiement à la livraison', date: new Date().toLocaleString() }));
+            localStorage.removeItem('panier');
+            panier = [];
+            document.querySelectorAll('.form-paiement').forEach(f => f.style.display = 'none');
+            document.querySelectorAll('.mode-btn').forEach(b => b.style.display = 'none');
+            document.querySelector('.paiement-title').style.display = 'none';
+            const succes = document.getElementById('succes');
+            succes.style.display = 'block';
+            document.getElementById('msg-succes').innerHTML = `
+                Merci <strong>${nom}</strong> ! 🎉<br>
+                Commande de <strong>${total.toLocaleString()} Fr CFA</strong> à livrer à :<br>
+                📍 ${adresse}<br><br>
+                Payez en cash à la réception.<br>
+                On vous contacte au <strong>${tel}</strong>.
+            `;
         }
 
         function changerQte(i, delta) {
