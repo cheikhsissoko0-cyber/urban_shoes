@@ -69,7 +69,7 @@
             border-radius: 2px;
         }
 
-        .nav-panier:hover { background: var(--blue-dark) !important; }
+        .nav-panier:hover { background: var(--blue-dark) !important; color: var(--white) !important; }
 
         .page-hero {
             padding: 120px 60px 60px;
@@ -151,7 +151,7 @@
 
         .produits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2px;
         }
 
@@ -213,38 +213,8 @@
 
         .produit-badge.new { background: var(--blue); }
 
-        .produit-actions {
-            position: absolute;
-            bottom: -50px;
-            left: 0; right: 0;
-            display: flex;
-            justify-content: center;
-            padding: 12px;
-            transition: bottom 0.3s ease;
-            z-index: 2;
-        }
-
-        .produit-card:hover .produit-actions { bottom: 0; }
-
-        .btn-panier {
-            background: var(--blue);
-            color: var(--white);
-            border: none;
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 12px 28px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
-        }
-
-        .btn-panier:hover { background: var(--blue-dark); }
-
         .produit-info {
-            padding: 18px 20px;
+            padding: 16px 18px 20px;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
@@ -261,13 +231,86 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.3rem;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .options-label {
+            font-size: 0.62rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .pointures {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .pointure-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--gray);
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .pointure-btn:hover { border-color: var(--blue); color: var(--white); }
+        .pointure-btn.selected { background: var(--blue); border-color: var(--blue); color: var(--white); }
+
+        .couleurs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .couleur-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .couleur-btn:hover { transform: scale(1.15); }
+        .couleur-btn.selected { border-color: var(--white); transform: scale(1.15); }
+        .couleur-btn.selected::after {
+            content: '✓';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: white;
+            text-shadow: 0 0 3px rgba(0,0,0,0.8);
+        }
+
+        .couleur-nom {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-bottom: 14px;
+            min-height: 16px;
+            letter-spacing: 1px;
         }
 
         .produit-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 14px;
         }
 
         .produit-prix { font-size: 1rem; font-weight: 700; }
@@ -279,7 +322,40 @@
             margin-left: 8px;
         }
 
-        .produit-tailles { font-size: 0.7rem; color: var(--gray); }
+        .btn-panier {
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-panier:hover { background: var(--blue-dark); }
+
+        .toast {
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--blue);
+            color: var(--white);
+            padding: 14px 28px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 999;
+            opacity: 0;
+            white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         footer {
             background: #060606;
@@ -347,462 +423,824 @@
     <section class="produits-section">
         <div class="produits-grid" id="products-container">
 
+            <!-- NEW BALANCE 9060 -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
                     <span class="produit-badge new">Nouveau</span>
                     <img src="../images/a9.jpeg" alt="New Balance 9060">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 9060', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 9060</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Gris" style="background:#888;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Beige" style="background:#c4a882;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 9060', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- DIOR B22 -->
             <div class="produit-card" data-marque="dior">
                 <div class="produit-img-wrap">
                     <img src="../images/a2.jpeg" alt="Dior B22">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Dior B22', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Dior</p>
                     <p class="produit-nom">Dior B22</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–44</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Bleu/Gris" style="background:#7a9cbf;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Dior B22', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NIKE SHOX TL -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <span class="produit-badge">-20%</span>
                     <img src="../images/a3.jpeg" alt="Nike Shox TL">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Shox TL', 25000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Nike Shox TL</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">25 000 Fr CFA <span class="produit-prix-old">30 000</span></span>
-                        <span class="produit-tailles">40–46</span>
+                    <div class="produit-footer"><span class="produit-prix">25 000 Fr CFA <span class="produit-prix-old">30 000</span></span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">46</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Argent" style="background:#c0c0c0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Rouge" style="background:#cc2200;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike Shox TL', 25000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- ASICS GEL-NYC -->
             <div class="produit-card" data-marque="asics">
                 <div class="produit-img-wrap">
                     <img src="../images/a1.jpeg" alt="Asics Gel-NYC">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Asics Gel-NYC', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Asics</p>
                     <p class="produit-nom">Gel-NYC</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Gris" style="background:#ddd;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Crème" style="background:#e8dcc8;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Asics Gel-NYC', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- GUCCI LOAFER -->
             <div class="produit-card" data-marque="gucci">
                 <div class="produit-img-wrap">
                     <span class="produit-badge new">Exclusif</span>
                     <img src="../images/a6.jpeg" alt="Gucci Loafer">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Gucci Loafer', 18000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Gucci</p>
                     <p class="produit-nom">Gucci Loafer</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">18 000 Fr CFA</span>
-                        <span class="produit-tailles">39–44</span>
+                    <div class="produit-footer"><span class="produit-prix">18 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Marron" style="background:#8b5e3c;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Beige" style="background:#c4a882;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Gucci Loafer', 18000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- GUCCI PRINCETOWN -->
             <div class="produit-card" data-marque="gucci">
                 <div class="produit-img-wrap">
                     <img src="../images/nikeslidepro.jpeg" alt="Gucci Princetown">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Gucci Princetown', 10000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Gucci</p>
                     <p class="produit-nom">Gucci Princetown</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">10 000 Fr CFA</span>
-                        <span class="produit-tailles">38–43</span>
+                    <div class="produit-footer"><span class="produit-prix">10 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Marron" style="background:#8b5e3c;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Gucci Princetown', 10000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NEW BALANCE 1000 -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
-                    <img src="../images/a12.jpeg" alt="New balance 1000">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 1000', 22000, this)">Ajouter au panier</button>
-                    </div>
+                    <img src="../images/a12.jpeg" alt="New Balance 1000">
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 1000</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">37–43</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">37</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Vert" style="background:#4a7c59;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Gris" style="background:#888;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 1000', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NIKE SLIDE PRO -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <img src="../images/a21.jpeg" alt="Nike Slide">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Slide Pro', 8000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Nike Slide Pro</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">8 000 Fr CFA</span>
-                        <span class="produit-tailles">39–46</span>
+                    <div class="produit-footer"><span class="produit-prix">8 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">46</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu" style="background:#1a3ef5;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike Slide Pro', 8000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NEW BALANCE 530 -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
                     <span class="produit-badge new">Nouveau</span>
                     <img src="../images/a15.jpeg" alt="New Balance 530">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 530', 18000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 530</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">18 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">18 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Argent" style="background:#e8e8e8;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu/Blanc" style="background:#4a6fa5;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Rose" style="background:#e8a0a0;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 530', 18000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- ASICS GEL-KAYANO -->
             <div class="produit-card" data-marque="asics">
                 <div class="produit-img-wrap">
                     <span class="produit-badge">-15%</span>
                     <img src="../images/a11.jpeg" alt="Asics Gel-Kayano 14">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Asics Gel-Kayano', 25000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Asics</p>
                     <p class="produit-nom">Gel-Kayano 14</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">25 000 Fr CFA <span class="produit-prix-old">30 000</span></span>
-                        <span class="produit-tailles">39–46</span>
+                    <div class="produit-footer"><span class="produit-prix">25 000 Fr CFA <span class="produit-prix-old">30 000</span></span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">46</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Bleu" style="background:#7a9cbf;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir/Rouge" style="background:#cc2200;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Crème" style="background:#e8dcc8;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Asics Gel-Kayano 14', 25000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NEW BALANCE 2002R -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
                     <img src="../images/a14.jpeg" alt="New Balance 2002R">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 2002R', 23000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 2002R</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">23 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">23 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Gris/Blanc" style="background:#ccc;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu Marine" style="background:#0d1a5e;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 2002R', 23000, this)">Ajouter au panier</button>
                 </div>
             </div>
 
+            <!-- NIKE VOMERO 5 -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <img src="../images/nikevomero5.jpeg" alt="Nike Vomero 5">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Vomero 5', 25000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Vomero 5</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">25 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">25 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu/Orange" style="background:#e86a2a;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike Vomero 5', 25000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- NIKE BASKET P-6000 -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <img src="../images/nikebasket p-6000.jpeg" alt="Nike Basket P-6000">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Basket P-6000', 25000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Nike Basket P-6000</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">25 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">25 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Gris" style="background:#ddd;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Beige" style="background:#c4a882;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike Basket P-6000', 25000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- NIKE MIND 001 -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <img src="../images/nikemind001.jpeg" alt="Nike Mind 001">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Mind 001', 7000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Nike Mind 001</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">7 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">7 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike Mind 001', 7000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- NIKE TN -->
             <div class="produit-card" data-marque="nike">
                 <div class="produit-img-wrap">
                     <img src="../images/niketn.jpeg" alt="Nike TN">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike TN', 12000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Nike</p>
                     <p class="produit-nom">Nike TN</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">12 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">12 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir/Rouge" style="background:#cc2200;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc/Bleu" style="background:#4a6fa5;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Nike TN', 12000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- AIR JORDAN 1 LOW -->
             <div class="produit-card" data-marque="jordan">
                 <div class="produit-img-wrap">
-                    <img src="../images/nike air jordan 1low.jpeg" alt="Nike Air Jordan 1 Low">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Nike Air Jordan 1 Low', 18000, this)">Ajouter au panier</button>
-                    </div>
+                    <img src="../images/nike air jordan 1low.jpeg" alt="Air Jordan 1 Low">
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Jordan</p>
-                    <p class="produit-nom">Nike Air Jordan 1 Low</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">18 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <p class="produit-nom">Air Jordan 1 Low</p>
+                    <div class="produit-footer"><span class="produit-prix">18 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Rouge" style="background:#cc2200;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir/Blanc" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu/Blanc" style="background:#4a6fa5;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Air Jordan 1 Low', 18000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- JORDAN 4 -->
             <div class="produit-card" data-marque="jordan">
                 <div class="produit-img-wrap">
                     <img src="../images/jordan4.jpeg" alt="Jordan 4">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Jordan 4', 20000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Jordan</p>
                     <p class="produit-nom">Jordan 4</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">20 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">20 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Gris" style="background:#ccc;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir/Rouge" style="background:#cc2200;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu" style="background:#1a3ef5;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Jordan 4', 20000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- ADIDAS ADISTAR -->
             <div class="produit-card" data-marque="adidas">
                 <div class="produit-img-wrap">
                     <img src="../images/adidasadistar.jpeg" alt="Adidas Adistar">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Adidas Adistar', 23000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Adidas</p>
                     <p class="produit-nom">Adidas Adistar</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">20 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">20 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Gris" style="background:#888;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Adidas Adistar', 20000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- ADIDAS SAMBA -->
             <div class="produit-card" data-marque="adidas">
                 <div class="produit-img-wrap">
                     <img src="../images/adidasamba.jpeg" alt="Adidas Samba">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Adidas Samba', 15000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Adidas</p>
                     <p class="produit-nom">Adidas Samba</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">15 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">15 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Noir" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir/Blanc" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Vert/Blanc" style="background:#4a7c59;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Marron" style="background:#8b5e3c;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Adidas Samba', 15000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- ADIDAS CAMPUS -->
             <div class="produit-card" data-marque="adidas">
                 <div class="produit-img-wrap">
                     <img src="../images/adidascampus.jpeg" alt="Adidas Campus">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Adidas Campus', 15000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Adidas</p>
                     <p class="produit-nom">Adidas Campus</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">15 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">15 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Vert" style="background:#4a7c59;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu Marine" style="background:#0d1a5e;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Adidas Campus', 15000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- ADIDAS FEAR OF GOD -->
             <div class="produit-card" data-marque="adidas">
                 <div class="produit-img-wrap">
                     <img src="../images/adidasfearofgod.jpeg" alt="Adidas Fear of God">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Adidas Fear of God', 18000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Adidas</p>
                     <p class="produit-nom">Adidas Fear of God</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">18 000 Fr CFA</span>
-                        <span class="produit-tailles">39–45</span>
+                    <div class="produit-footer"><span class="produit-prix">18 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Gris/Blanc" style="background:#ccc;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Crème" style="background:#e8dcc8;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Adidas Fear of God', 18000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- DIOR B30 -->
             <div class="produit-card" data-marque="dior">
                 <div class="produit-img-wrap">
                     <img src="../images/diorb30.jpeg" alt="Dior B30">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Dior B30', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Dior</p>
                     <p class="produit-nom">Dior B30</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–44</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Gris" style="background:#ddd;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Beige" style="background:#c4a882;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Dior B30', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- DIOR B9 -->
             <div class="produit-card" data-marque="dior">
                 <div class="produit-img-wrap">
                     <img src="../images/diorb9.jpeg" alt="Dior B9">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Dior B9', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Dior</p>
                     <p class="produit-nom">Dior B9</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–44</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Bleu" style="background:#7a9cbf;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Gris" style="background:#888;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Dior B9', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- DIOR SANDALE -->
             <div class="produit-card" data-marque="dior">
                 <div class="produit-img-wrap">
-                    <img src="../images/sandaledioralphadoubletalon.jpeg" alt="Dior Sandale Alpha Double Talon">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Dior Sandale Alpha Double Talon', 10000, this)">Ajouter au panier</button>
-                    </div>
+                    <img src="../images/sandaledioralphadoubletalon.jpeg" alt="Dior Sandale Alpha">
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Dior</p>
-                    <p class="produit-nom">Dior Sandale Alpha Double Talon</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">10 000 Fr CFA</span>
-                        <span class="produit-tailles">38–44</span>
+                    <p class="produit-nom">Dior Sandale Alpha</p>
+                    <div class="produit-footer"><span class="produit-prix">10 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Blanc" style="background:#f0f0f0;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Dior Sandale Alpha', 10000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- NEW BALANCE 740 -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
                     <img src="../images/nb740.jpeg" alt="New Balance 740">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 740', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 740</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Gris" style="background:#ddd;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Bleu" style="background:#4a6fa5;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 740', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
+            <!-- NEW BALANCE 1906 -->
             <div class="produit-card" data-marque="newbalance">
                 <div class="produit-img-wrap">
                     <img src="../images/nb1906.jpeg" alt="New Balance 1906">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('New Balance 1906', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">New Balance</p>
                     <p class="produit-nom">New Balance 1906</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Argent/Blanc" style="background:#e0e0e0;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Beige" style="background:#c4a882;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('New Balance 1906', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
+
+            <!-- ASICS GEL-1130 -->
             <div class="produit-card" data-marque="asics">
                 <div class="produit-img-wrap">
                     <img src="../images/a10.jpeg" alt="Asics Gel-1130">
-                    <div class="produit-actions">
-                        <button class="btn-panier" onclick="ajouterPanier('Asics Gel-1130', 22000, this)">Ajouter au panier</button>
-                    </div>
                 </div>
                 <div class="produit-info">
                     <p class="produit-marque">Asics</p>
                     <p class="produit-nom">Asics Gel-1130</p>
-                    <div class="produit-footer">
-                        <span class="produit-prix">22 000 Fr CFA</span>
-                        <span class="produit-tailles">38–45</span>
+                    <div class="produit-footer"><span class="produit-prix">22 000 Fr CFA</span></div>
+                    <p class="options-label">Pointure</p>
+                    <div class="pointures">
+                        <button class="pointure-btn" onclick="choisirPointure(this)">38</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">39</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">40</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">41</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">42</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">43</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">44</button>
+                        <button class="pointure-btn" onclick="choisirPointure(this)">45</button>
                     </div>
+                    <p class="options-label">Couleur</p>
+                    <div class="couleurs">
+                        <div class="couleur-btn" data-couleur="Blanc/Bleu" style="background:#7a9cbf;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Crème/Vert" style="background:#8fbc8f;" onclick="choisirCouleur(this)"></div>
+                        <div class="couleur-btn" data-couleur="Noir" style="background:#111;" onclick="choisirCouleur(this)"></div>
+                    </div>
+                    <p class="couleur-nom">—</p>
+                    <button class="btn-panier" onclick="ajouterPanier('Asics Gel-1130', 22000, this)">Ajouter au panier</button>
                 </div>
             </div>
-
-
-
-
-
-
-
-
 
         </div>
     </section>
@@ -812,28 +1250,46 @@
         <span class="footer-logo">URBAN SHOES</span>
     </footer>
 
-    <script>
-        // ✅ CORRECTION : on passe le bouton en paramètre pour éviter le bug avec event
-        function ajouterPanier(nom, prix, btn) {
-            let panier = JSON.parse(localStorage.getItem('panier') || '[]');
-            const existe = panier.find(p => p.nom === nom);
-            if (existe) {
-                existe.qte += 1;
-            } else {
-                panier.push({ nom: nom, prix: prix, qte: 1 });
-            }
-            localStorage.setItem('panier', JSON.stringify(panier));
+    <div class="toast" id="toast"></div>
 
-            // Feedback visuel
-            btn.textContent = '✓ Ajouté !';
-            btn.style.background = '#16a34a';
-            setTimeout(() => {
-                btn.textContent = 'Ajouter au panier';
-                btn.style.background = '';
-            }, 1500);
+    <script>
+        function choisirPointure(btn) {
+            const card = btn.closest('.produit-card');
+            card.querySelectorAll('.pointure-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
         }
 
-        // ✅ CORRECTION : on passe le bouton cliqué en paramètre
+        function choisirCouleur(dot) {
+            const card = dot.closest('.produit-card');
+            card.querySelectorAll('.couleur-btn').forEach(d => d.classList.remove('selected'));
+            dot.classList.add('selected');
+            card.querySelector('.couleur-nom').textContent = dot.dataset.couleur;
+        }
+
+        function ajouterPanier(nom, prix, btn) {
+            const card = btn.closest('.produit-card');
+            const pointureBtn = card.querySelector('.pointure-btn.selected');
+            const couleurBtn = card.querySelector('.couleur-btn.selected');
+
+            if (!pointureBtn) { showToast('⚠️ Choisissez une pointure !'); return; }
+            if (!couleurBtn) { showToast('⚠️ Choisissez une couleur !'); return; }
+
+            const pointure = pointureBtn.textContent;
+            const couleur = couleurBtn.dataset.couleur;
+            const cle = `${nom}-${pointure}-${couleur}`;
+
+            let panier = JSON.parse(localStorage.getItem('panier') || '[]');
+            const existe = panier.find(p => p.cle === cle);
+            if (existe) { existe.qte += 1; }
+            else { panier.push({ cle, nom, prix, pointure, couleur, qte: 1 }); }
+            localStorage.setItem('panier', JSON.stringify(panier));
+
+            btn.textContent = '✓ Ajouté !';
+            btn.style.background = '#16a34a';
+            showToast(`✓ ${nom} — Pointure ${pointure} — ${couleur}`);
+            setTimeout(() => { btn.textContent = 'Ajouter au panier'; btn.style.background = ''; }, 1800);
+        }
+
         function filtrer(btn, marque) {
             document.querySelectorAll('.filtre-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -841,7 +1297,15 @@
                 card.style.display = (marque === 'tous' || card.dataset.marque === marque) ? 'block' : 'none';
             });
         }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
     </script>
 
 </body>
 </html>
+ 
