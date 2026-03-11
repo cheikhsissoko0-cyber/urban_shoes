@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Couleur de fond douce */
+}
+
+header {
+    background: #007bff; /* Une belle couleur bleue */
+    color: #ffffff;
+    padding: 15px 0;
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main {
+    padding: 0;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.banner-image {
+    width: 100%;  /* Taille de l'image d'accueil */
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #007bff;
+    color: #ffffff;
+}
+.produits {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+justify-content: center;
+padding: 20px;
+}
+
+.produit {
+border: 1px solid #ccc;
+padding: 10px;
+width: 180px;
+height: 280px;
+text-align: center;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+.produit img {
+width: 100%;
+height: 150px;
+object-fit: cover;
+border-radius: 5px;
+}
+.produit:hover {
+transform: translateY(-8px);
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.produit button {
+    background-color: #007bff;   /* ← couleur bleue */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: auto;            /* ← pousse le bouton vers le bas */
+    width: 100%;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+.produit button:hover {
+    background-color: #0056b3;   /* ← bleu foncé au survol */
+}
+.produit h3 {
+    margin-top: 8px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.produit p {
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #555;
+}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier | URBAN SHOES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #f5f5f0;
+            --blue: #1a3ef5;
+            --blue-dark: #0f26c0;
+            --accent: #ff2d2d;
+            --gray: #888;
+            --card: #111;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 70px;
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 4px; }
+        header h1 span { color: var(--blue); }
+        nav ul { display: flex; gap: 36px; list-style: none; }
+        nav a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; }
+        nav a:hover, nav a.active { color: var(--white); }
+        .nav-panier { background: var(--blue); color: var(--white) !important; padding: 8px 20px; border-radius: 2px; }
+        .nav-panier:hover { background: var(--blue-dark) !important; }
+
+        .page-hero {
+            padding: 120px 60px 60px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0d1a5e 60%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .page-hero-content { position: relative; z-index: 1; }
+        .page-tag { display: inline-block; background: var(--blue); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 14px; margin-bottom: 16px; }
+        .page-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); letter-spacing: 3px; line-height: 1; }
+        .page-hero h2 span { color: var(--blue); }
+        .page-hero p { color: rgba(245,245,240,0.55); font-size: 1rem; margin-top: 12px; font-weight: 300; }
+
+        .panier-section { padding: 60px; max-width: 1100px; margin: 0 auto; }
+
+        .panier-vide { text-align: center; padding: 100px 20px; animation: fadeUp 0.6s ease both; }
+        .panier-vide .icon { font-size: 5rem; margin-bottom: 20px; }
+        .panier-vide h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .panier-vide p { color: var(--gray); font-size: 1rem; margin-bottom: 30px; font-weight: 300; }
+        .btn-primary { display: inline-block; background: var(--blue); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; border: 2px solid var(--blue); transition: background 0.2s, color 0.2s, transform 0.2s; }
+        .btn-primary:hover { background: transparent; color: var(--blue); transform: translateY(-2px); }
+
+        .panier-layout { display: grid; grid-template-columns: 1fr 380px; gap: 30px; animation: fadeUp 0.6s ease both; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .panier-items { display: flex; flex-direction: column; gap: 2px; }
+        .panier-item { display: flex; align-items: center; gap: 20px; padding: 20px; background: var(--card); border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.2s; }
+        .panier-item:hover { border-color: rgba(26,62,245,0.3); }
+        .panier-item img { width: 90px; height: 90px; object-fit: cover; background: #1a1a1a; flex-shrink: 0; }
+        .item-info { flex: 1; }
+        .item-marque { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); font-weight: 700; margin-bottom: 4px; }
+        .item-nom { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 1px; margin-bottom: 6px; }
+        .item-prix { font-size: 1rem; font-weight: 700; color: var(--white); }
+        .item-qte { display: flex; align-items: center; gap: 12px; }
+        .qte-btn { width: 30px; height: 30px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .qte-btn:hover { background: var(--blue); border-color: var(--blue); }
+        .qte-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; min-width: 24px; text-align: center; }
+        .item-suppr { background: transparent; border: none; color: var(--gray); font-size: 1.1rem; cursor: pointer; padding: 8px; transition: color 0.2s; }
+        .item-suppr:hover { color: var(--accent); }
+
+        .panier-resume { background: var(--card); border: 1px solid rgba(255,255,255,0.05); padding: 36px 30px; height: fit-content; position: sticky; top: 90px; }
+        .resume-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .resume-line { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--gray); }
+        .resume-total { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; }
+        .resume-total span:last-child { color: var(--blue); }
+
+        .paiement-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; margin: 28px 0 14px; }
+
+        .mode-btn { display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px 16px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); color: var(--white); cursor: pointer; margin-bottom: 8px; transition: border-color 0.2s, background 0.2s; font-family: 'Barlow', sans-serif; text-align: left; }
+        .mode-btn:hover, .mode-btn.selected { border-color: var(--blue); background: rgba(26,62,245,0.08); }
+        .mode-logo { width: 60px; height: 60px; object-fit: contain; border-radius: 8px; flex-shrink: 0; background: #fff; padding: 4px; }
+        .mode-label { font-size: 0.85rem; font-weight: 700; }
+        .mode-sub { font-size: 0.72rem; color: var(--gray); }
+
+        .form-paiement { display: none; margin-top: 16px; }
+        .form-paiement input { display: block; width: 100%; padding: 12px 14px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.9rem; margin-bottom: 10px; outline: none; transition: border-color 0.2s; }
+        .form-paiement input:focus { border-color: var(--blue); }
+        .form-paiement input::placeholder { color: rgba(255,255,255,0.2); }
+
+        /* ── GPS BOUTON ── */
+        .gps-bloc {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .gps-bloc input {
+            flex: 1;
+            margin-bottom: 0 !important;
+        }
+
+        .btn-gps {
+            padding: 0 14px;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-radius: 2px;
+            transition: background 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-gps:hover { background: var(--blue-dark); }
+
+        .btn-gps.loading { background: var(--gray); cursor: wait; }
+
+        .gps-status {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 2px;
+            display: none;
+        }
+
+        .gps-status.ok { background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3); color: #4ade80; display: block; }
+        .gps-status.err { background: rgba(255,45,45,0.1); border: 1px solid rgba(255,45,45,0.3); color: #ff6b6b; display: block; }
+
+        .btn-wave-payer { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: #00AAFF; color: #fff; border: none; font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 6px; transition: background 0.2s, transform 0.2s; border-radius: 2px; }
+        .btn-wave-payer:hover { background: #0088cc; transform: translateY(-2px); }
+        .btn-wave-payer img { width: 26px; height: 26px; object-fit: contain; border-radius: 4px; }
+
+        .info-montant { background: rgba(26,62,245,0.1); border: 1px solid rgba(26,62,245,0.25); padding: 12px 14px; margin-bottom: 12px; font-size: 0.82rem; color: rgba(245,245,240,0.75); line-height: 1.5; }
+        .info-montant strong { color: var(--white); }
+
+        .btn-vider { display: block; width: 100%; padding: 12px; background: transparent; color: var(--gray); border: 1px solid rgba(255,255,255,0.08); font-family: 'Barlow', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 10px; transition: color 0.2s, border-color 0.2s; }
+        .btn-vider:hover { color: var(--accent); border-color: var(--accent); }
+
+        .succes-msg { display: none; margin-top: 16px; padding: 20px; background: rgba(22,163,74,0.12); border: 1px solid rgba(22,163,74,0.35); text-align: center; }
+        .succes-msg .succes-icon { font-size: 2rem; margin-bottom: 8px; }
+        .succes-msg h4 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: #4ade80; margin-bottom: 6px; }
+        .succes-msg p { font-size: 0.85rem; color: rgba(245,245,240,0.65); font-weight: 300; }
+
+        footer { background: #060606; border-top: 1px solid rgba(255,255,255,0.07); padding: 30px 60px; display: flex; align-items: center; justify-content: space-between; margin-top: 40px; }
+        footer p { font-size: 0.8rem; color: var(--gray); }
+        .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 4px; color: rgba(255,255,255,0.3); }
+
+        @media (max-width: 900px) { .panier-layout { grid-template-columns: 1fr; } .panier-resume { position: static; } }
+        @media (max-width: 768px) { header { padding: 0 20px; } header h1 { font-size: 1.4rem; } nav ul { gap: 16px; } .nav-panier { display: none; } .page-hero { padding: 100px 24px 40px; } .panier-section { padding: 40px 16px; } footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>URBAN <span>SHOES</span></h1>
+        <nav>
+            <ul>
+                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="produits.html">Produits</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="panier.html" class="nav-panier active">🛒 Panier</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-hero">
+        <div class="page-hero-content">
+            <span class="page-tag">✦ Récapitulatif</span>
+            <h2>Votre <span>Panier</span></h2>
+            <p>Vérifiez votre sélection et finalisez votre commande.</p>
+        </div>
+    </div>
+
+    <section class="panier-section">
+        <div id="contenu"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 URBAN SHOES — Tous droits réservés</p>
+        <span class="footer-logo">URBAN SHOES</span>
+    </footer>
+
+    <script>
+        const WAVE_LINK = 'https://pay.wave.com/m/M_sn_3ggdYEonnkqN/c/sn/';
+
+        let panierData = localStorage.getItem('panier');
+        let panier = panierData ? JSON.parse(panierData) : [];
+
+        function rendu() {
+            const contenu = document.getElementById('contenu');
+            panier = panier.map(item => ({
+                nom: item.nom || item.name || 'Produit',
+                prix: item.prix || item.price || 23000,
+                qte: item.qte || item.quantite || 1
+            }));
+            localStorage.setItem('panier', JSON.stringify(panier));
+
+            if (panier.length === 0) {
+                contenu.innerHTML = `
+                <div class="panier-vide">
+                    <div class="icon">🛒</div>
+                    <h3>Panier vide</h3>
+                    <p>Vous n'avez pas encore ajouté de produits.</p>
+                    <a href="produits.html" class="btn-primary">Voir les produits</a>
+                </div>`;
+                return;
+            }
+
+            let total = 0;
+            let itemsHTML = '';
+
+            panier.forEach((item, i) => {
+                total += item.prix * item.qte;
+                itemsHTML += `
+                <div class="panier-item">
+                    <img src="../images/chaussure${i+1}.jpeg" alt="${item.nom}" onerror="this.src='../images/a23.jpeg'">
+                    <div class="item-info">
+                        <p class="item-marque">Urban Shoes</p>
+                        <p class="item-nom">${item.nom}</p>
+                        <p class="item-prix">${item.prix.toLocaleString()} Fr CFA</p>
+                    </div>
+                    <div class="item-qte">
+                        <button class="qte-btn" onclick="changerQte(${i}, -1)">−</button>
+                        <span class="qte-num">${item.qte}</span>
+                        <button class="qte-btn" onclick="changerQte(${i}, 1)">+</button>
+                    </div>
+                    <button class="item-suppr" onclick="supprimer(${i})">✕</button>
+                </div>`;
+            });
+
+            const totalFormate = total.toLocaleString();
+
+            contenu.innerHTML = `
+            <div class="panier-layout">
+                <div class="panier-items">${itemsHTML}</div>
+                <div class="panier-resume">
+                    <h3 class="resume-title">Résumé</h3>
+                    <div class="resume-line"><span>Articles (${panier.length})</span><span>${totalFormate} Fr CFA</span></div>
+                    <div class="resume-line"><span>Livraison</span><span style="color:#4ade80">Gratuite</span></div>
+                    <div class="resume-total"><span>Total</span><span>${totalFormate} Fr CFA</span></div>
+
+                    <p class="paiement-title">Mode de Paiement</p>
+
+                    <button class="mode-btn" id="btn-wave" onclick="choisir('wave')">
+                        <img class="mode-logo" src="../images/wave.jpeg" alt="Wave">
+                        <div>
+                            <p class="mode-label" style="color:#00AAFF;">Wave</p>
+                            <p class="mode-sub">Paiement instantané via Wave</p>
+                        </div>
+                    </button>
+
+                    <div class="form-paiement" id="form-wave">
+                        <div class="info-montant">
+                            ✅ Vous allez être redirigé vers <strong>Wave</strong> pour payer <strong>${totalFormate} Fr CFA</strong> en toute sécurité.
+                        </div>
+
+                        <input id="nom-wave" type="text" placeholder="Votre nom complet">
+                        <input id="tel-wave" type="tel" placeholder="Votre numéro de téléphone">
+
+                        <!-- CHAMP ADRESSE + BOUTON GPS -->
+                        <div class="gps-bloc">
+                            <input id="adresse-wave" type="text" placeholder="Adresse de livraison">
+                            <button class="btn-gps" id="btn-gps" onclick="detecterPosition()" title="Détecter ma position GPS">📍</button>
+                        </div>
+                        <div class="gps-status" id="gps-status"></div>
+
+                        <button class="btn-wave-payer" onclick="payerWave(${total})">
+                            <img src="../images/wave.jpeg" alt="Wave">
+                            Payer ${totalFormate} Fr CFA avec Wave
+                        </button> 
+                    </div>
+
+                    <div class="succes-msg" id="succes">
+                        <div class="succes-icon">🎉</div>
+                        <h4>Commande Confirmée !</h4>
+                        <p id="msg-succes"></p>
+                    </div>
+
+                    <button class="btn-vider" onclick="vider()">🗑️ &nbsp;Vider le panier</button>
+                </div>
+            </div>`;
+        }
+
+        // ══════════════════════════════════════════
+        //  GPS — Détection automatique de position
+        // ══════════════════════════════════════════
+        function detecterPosition() {
+            const btn    = document.getElementById('btn-gps');
+            const status = document.getElementById('gps-status');
+            const input  = document.getElementById('adresse-wave');
+
+            if (!navigator.geolocation) {
+                status.className = 'gps-status err';
+                status.textContent = '❌ GPS non supporté sur ce navigateur.';
+                return;
+            }
+
+            btn.classList.add('loading');
+            btn.textContent = '⏳';
+            status.className = 'gps-status';
+            status.textContent = '';
+
+            navigator.geolocation.getCurrentPosition(
+                async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+
+                    // Reverse geocoding gratuit avec OpenStreetMap (pas besoin de clé API)
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+                        const data = await res.json();
+                        const adresse = data.display_name || `${lat}, ${lng}`;
+                        input.value = adresse;
+                        status.className = 'gps-status ok';
+                        status.textContent = '✅ Position détectée avec succès !';
+                    } catch (e) {
+                        input.value = `${lat}, ${lng}`;
+                        status.className = 'gps-status ok';
+                        status.textContent = '✅ Coordonnées GPS récupérées !';
+                    }
+
+                    btn.classList.remove('loading');
+                    btn.textContent = '📍';
+                },
+                (err) => {
+                    btn.classList.remove('loading');
+                    btn.textContent = '📍';
+                    status.className = 'gps-status err';
+                    if (err.code === 1) {
+                        status.textContent = '❌ Accès GPS refusé. Autorisez la localisation dans votre navigateur.';
+                    } else {
+                        status.textContent = '❌ Impossible de détecter la position. Entrez l\'adresse manuellement.';
+                    }
+                },
+                { timeout: 10000, enableHighAccuracy: true }
+            );
+        }
+
+        function choisir(mode) {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.form-paiement').forEach(f => f.style.display = 'none');
+            document.getElementById('btn-' + mode).classList.add('selected');
+            document.getElementById('form-' + mode).style.display = 'block';
+        }
+
+        function payerWave(total) {
+            const nom     = document.getElementById('nom-wave').value.trim();
+            const tel     = document.getElementById('tel-wave').value.trim();
+            const adresse = document.getElementById('adresse-wave').value.trim();
+            if (!nom || !tel || !adresse) { alert('⚠️ Veuillez remplir tous les champs avant de payer !'); return; }
+            localStorage.setItem('derniereCommande', JSON.stringify({ nom, tel, adresse, total, articles: panier, mode: 'Wave', date: new Date().toLocaleString() }));
+            localStorage.removeItem('panier');
+            panier = [];
+            window.location.href = `${WAVE_LINK}?amount=${total}`;
+        }
+
+        function changerQte(i, delta) {
+            panier[i].qte += delta;
+            if (panier[i].qte <= 0) panier.splice(i, 1);
+            localStorage.setItem('panier', JSON.stringify(panier));
+            rendu();
+        }
+
+        function supprimer(i) {
+            panier.splice(i, 1);
+            localStorage.setItem('panier', JSON.stringify(panier));
+            rendu();
+        }
+
+        function vider() {
+            if (confirm('Vider le panier ?')) { localStorage.removeItem('panier'); panier = []; rendu(); }
+        }
+
+        rendu();
+    </script>
+    <script>
+(function() {
+  const API = 'https://script.google.com/macros/s/AKfycbzkzSKIx9EHEkj3dMEN8xxXlJlGDEJf3TU0IihoR-jzOgkhhhGcvQEMoGr85_KykvYJ/exec';
+  const pages = {
+    'accueil.html': 'Accueil',
+    'produits.html': 'Produits',
+    'contact.html': 'Contact',
+    'panier.html': 'Panier'
+  };
+  const url = window.location.pathname;
+  const pageName = Object.entries(pages).find(([k]) => url.includes(k))?.[1] || 'Accueil';
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Ordinateur';
+  const nav = navigator.userAgent.includes('Chrome') ? 'Chrome'
+    : navigator.userAgent.includes('Firefox') ? 'Firefox'
+    : navigator.userAgent.includes('Safari') ? 'Safari'
+    : navigator.userAgent.includes('Edge') ? 'Edge' : 'Autre';
+  const now = new Date();
+  fetch(API, {
+    method: 'POST',
+    body: JSON.stringify({
+      date: now.toLocaleDateString('fr-FR'),
+      heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+      page: pageName,
+      appareil: isMobile,
+      navigateur: nav
+    })
+  }).catch(()=>{});
+})();
+</script>
+
+</body>
+</html>

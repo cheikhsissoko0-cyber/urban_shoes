@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Shoes — Statistiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1a6bff; --blue-dark: #0047d4; --blue-glow: rgba(26,107,255,0.18);
+    --bg: #07090f; --surface: #0e1219; --surface2: #141924;
+    --border: rgba(255,255,255,0.07); --text: #e8eaf2; --muted: #5a6072;
+    --green: #00e896; --red: #ff3b5c; --yellow: #ffd23f; --purple: #a855f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  header { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+  .logo span { color: var(--blue); }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-badge { background: var(--blue-glow); border: 1px solid var(--blue); color: var(--blue); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+  .sync-status { font-size: 12px; color: var(--muted); }
+  .sync-status.ok { color: var(--green); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+  .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 800; text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+  .page-title span { color: var(--blue); }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 36px; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .stat-card.blue::before { background: var(--blue); }
+  .stat-card.green::before { background: var(--green); }
+  .stat-card.yellow::before { background: var(--yellow); }
+  .stat-card.purple::before { background: var(--purple); }
+  .stat-icon { font-size: 28px; margin-bottom: 8px; }
+  .stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .stat-value { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; }
+  .stat-value.blue { color: var(--blue); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.yellow { color: var(--yellow); }
+  .stat-value.purple { color: var(--purple); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+  .card-title span { color: var(--blue); }
+
+  .bar-item { margin-bottom: 14px; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+  .bar-label span:first-child { color: var(--text); }
+  .bar-label span:last-child { color: var(--muted); }
+  .bar-track { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--blue); transition: width 1s ease; }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.yellow { background: var(--yellow); }
+  .bar-fill.purple { background: var(--purple); }
+
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { background: var(--surface2); padding: 14px 20px; text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(26,107,255,0.04); }
+  td { padding: 14px 20px; font-size: 14px; vertical-align: middle; }
+
+  .page-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--blue-glow); border: 1px solid rgba(26,107,255,0.3); color: var(--blue); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .device-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+  .device-badge.mobile { background: rgba(0,232,150,0.1); border: 1px solid rgba(0,232,150,0.3); color: var(--green); }
+  .device-badge.desktop { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); color: var(--purple); }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-wrap { text-align: center; padding: 40px; color: var(--muted); }
+
+  .toolbar { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; justify-content: space-between; }
+  .toolbar-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+  @media (max-width: 768px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+    header { padding: 0 16px; }
+    .container { padding: 24px 16px; }
+    .page-title { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">URBAN <span>SHOES</span></div>
+  <div class="header-right">
+    <span class="sync-status" id="syncStatus">⏳ Chargement...</span>
+    <div class="header-badge">Statistiques</div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="page-title">STATS <span>VISITES</span></div>
+  <div class="page-sub">Suivez les visites de votre site en temps réel</div>
+
+  <div class="stats">
+    <div class="stat-card blue">
+      <div class="stat-icon">👁️</div>
+      <div class="stat-label">Total Visites</div>
+      <div class="stat-value blue" id="statTotal">—</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">📅</div>
+      <div class="stat-label">Aujourd'hui</div>
+      <div class="stat-value green" id="statAujourdhui">—</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-icon">📱</div>
+      <div class="stat-label">Mobile</div>
+      <div class="stat-value yellow" id="statMobile">—</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">💻</div>
+      <div class="stat-label">Ordinateur</div>
+      <div class="stat-value purple" id="statDesktop">—</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Pages les plus <span>visitées</span></div>
+      <div id="chartPages"><div class="loader-wrap"><div class="spinner"></div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Visites des <span>7 derniers jours</span></div>
+      <div id="chartJours"><div class="loader-wrap"><div class="spinner"></div></div></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-title">Dernières visites</div>
+    <button class="btn btn-ghost" onclick="loadVisites()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Actualiser
+    </button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Page visitée</th>
+          <th>Appareil</th>
+          <th>Navigateur</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="5"><div class="loader-wrap"><div class="spinner"></div>Chargement...</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+  const MOT_DE_PASSE = '2403';
+  const cle = 'urban_admin_ok';
+  if (sessionStorage.getItem(cle) !== 'oui') {
+    const saisie = prompt('🔐 Mot de passe administrateur :');
+    if (saisie !== MOT_DE_PASSE) {
+      document.body.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#07090f;color:#ff3b5c;font-family:sans-serif;gap:16px;">
+          <div style="font-size:48px;">🔒</div>
+          <div style="font-size:20px;font-weight:700;">Accès refusé</div>
+          <div style="color:#5a6072;font-size:14px;">Mot de passe incorrect</div>
+          <a href="accueil.html" style="color:#1a6bff;font-size:14px;">← Retour au site</a>
+        </div>`;
+      return;
+    }
+    sessionStorage.setItem(cle, 'oui');
+  }
+})();
+
+const API_VISITES = 'https://script.google.com/macros/s/AKfycbzkzSKIx9EHEkj3dMEN8xxXlJlGDEJf3TU0IihoR-jzOgkhhhGcvQEMoGr85_KykvYJ/exec';
+let visites = [];
+
+async function loadVisites() {
+  try {
+    const res = await fetch(API_VISITES);
+    visites = await res.json();
+    document.getElementById('syncStatus').textContent = '✅ Connecté';
+    document.getElementById('syncStatus').className = 'sync-status ok';
+    renderStats();
+    renderCharts();
+    renderTable();
+  } catch (err) {
+    document.getElementById('syncStatus').textContent = '❌ Erreur';
+    document.getElementById('tableBody').innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">⚠️</div><div>Impossible de charger les données</div></div></td></tr>`;
+  }
+}
+
+function renderStats() {
+  const today = new Date().toLocaleDateString('fr-FR');
+  const aujourdhui = visites.filter(v => v.date === today).length;
+  const mobile = visites.filter(v => (v.appareil||'').toLowerCase().includes('mobile')).length;
+  const desktop = visites.length - mobile;
+  document.getElementById('statTotal').textContent = visites.length;
+  document.getElementById('statAujourdhui').textContent = aujourdhui;
+  document.getElementById('statMobile').textContent = mobile;
+  document.getElementById('statDesktop').textContent = desktop;
+}
+
+function renderCharts() {
+  const pages = {};
+  visites.forEach(v => { pages[v.page] = (pages[v.page] || 0) + 1; });
+  const sortedPages = Object.entries(pages).sort((a,b) => b[1]-a[1]).slice(0, 5);
+  const maxPage = sortedPages[0]?.[1] || 1;
+  const colors = ['blue', 'green', 'yellow', 'purple', 'blue'];
+  document.getElementById('chartPages').innerHTML = sortedPages.length === 0
+    ? '<div class="empty"><div class="empty-icon">📄</div><div>Pas encore de données</div></div>'
+    : sortedPages.map(([page, count], i) => `
+      <div class="bar-item">
+        <div class="bar-label"><span>${page}</span><span>${count} visite${count>1?'s':''}</span></div>
+        <div class="bar-track"><div class="bar-fill ${colors[i]}" style="width:${(count/maxPage)*100}%"></div></div>
+      </div>`).join('');
+
+  const jours = {};
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    jours[d.toLocaleDateString('fr-FR')] = 0;
+  }
+  visites.forEach(v => { if (jours[v.date] !== undefined) jours[v.date]++; });
+  const maxJour = Math.max(...Object.values(jours), 1);
+  document.getElementById('chartJours').innerHTML = Object.entries(jours).map(([date, count]) => `
+    <div class="bar-item">
+      <div class="bar-label"><span>${date}</span><span>${count}</span></div>
+      <div class="bar-track"><div class="bar-fill green" style="width:${(count/maxJour)*100}%"></div></div>
+    </div>`).join('');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const recent = [...visites].reverse().slice(0, 50);
+  if (recent.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">👟</div><div>Aucune visite enregistrée</div></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = recent.map(v => {
+    const isMobile = (v.appareil||'').toLowerCase().includes('mobile');
+    return `<tr>
+      <td>${v.date||'—'}</td>
+      <td>${v.heure||'—'}</td>
+      <td><span class="page-badge">📄 ${v.page||'—'}</span></td>
+      <td><span class="device-badge ${isMobile?'mobile':'desktop'}">${isMobile?'📱 Mobile':'💻 Ordinateur'}</span></td>
+      <td>${v.navigateur||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+loadVisites();
+setInterval(loadVisites, 30000);
+</script>
+</body>
+</html>

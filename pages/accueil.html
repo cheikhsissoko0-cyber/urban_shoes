@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil | URBAN SHOES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #f5f5f0;
+            --blue: #1a3ef5;
+            --blue-dark: #0f26c0;
+            --accent: #ff2d2d;
+            --gray: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 70px;
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 4px;
+            color: var(--white);
+        }
+
+        header h1 span { color: var(--blue); }
+
+        nav ul {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active { color: var(--white); }
+
+        .nav-panier {
+            background: var(--blue);
+            color: var(--white) !important;
+            padding: 8px 20px;
+            border-radius: 2px;
+            transition: background 0.2s !important;
+        }
+
+        .nav-panier:hover { background: var(--blue-dark) !important; color: var(--white) !important; }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 200;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0; right: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 20px 0;
+            z-index: 99;
+            flex-direction: column;
+        }
+
+        .mobile-menu.open { display: flex; }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 16px 30px;
+            transition: color 0.2s, background 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mobile-menu a:hover, .mobile-menu a.active { color: var(--white); background: rgba(255,255,255,0.03); }
+
+        .mobile-menu .mobile-panier {
+            margin: 16px 30px 6px;
+            background: var(--blue);
+            color: var(--white) !important;
+            text-align: center;
+            padding: 16px;
+            border-bottom: none;
+            border-radius: 2px;
+        }
+
+        .mobile-menu .mobile-panier:hover { background: var(--blue-dark) !important; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 70px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0d1a5e 50%, #0a0a0a 100%);
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 70% 50%, rgba(26,62,245,0.18) 0%, transparent 70%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { transform: translateY(0); }
+            to   { transform: translateY(60px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 60px;
+            max-width: 650px;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--blue);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            margin-bottom: 24px;
+            animation: fadeUp 0.9s 0.1s ease both;
+        }
+
+        .hero h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 9vw, 8rem);
+            line-height: 0.95;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            animation: fadeUp 0.9s 0.2s ease both;
+        }
+
+        .hero h2 em {
+            font-style: normal;
+            color: var(--blue);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: rgba(245,245,240,0.65);
+            line-height: 1.7;
+            margin-bottom: 40px;
+            font-weight: 300;
+            animation: fadeUp 0.9s 0.3s ease both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeUp 0.9s 0.4s ease both;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--blue);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 16px 36px;
+            border: 2px solid var(--blue);
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 16px 36px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            position: absolute;
+            right: -20px;
+            bottom: 0;
+            width: 55%;
+            max-width: 700px;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1;
+            animation: fadeUp 1s 0.2s ease both;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 90%;
+            object-fit: cover;
+            object-position: center top;
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.85) 30%, transparent 100%);
+            mask-image: linear-gradient(to left, rgba(0,0,0,0.85) 30%, transparent 100%);
+        }
+
+        /* STATS */
+        .stats-bar {
+            background: var(--blue);
+            padding: 20px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px;
+        }
+
+        .stat:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* OFFRES */
+        .offres { padding: 80px 60px; }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 3px;
+        }
+
+        .section-title span { color: var(--blue); }
+
+        .section-link {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--blue);
+            padding-bottom: 2px;
+            transition: opacity 0.2s;
+        }
+
+        .section-link:hover { opacity: 0.7; }
+
+        .offres-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 2px;
+        }
+
+        .offre-card {
+            position: relative;
+            overflow: hidden;
+            background: #111;
+            cursor: pointer;
+        }
+
+        .offre-card:first-child { grid-row: span 2; }
+
+        .offre-card img {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .offre-card:first-child img {
+            min-height: 460px;
+            object-position: center top;
+        }
+
+        .offre-card:hover img { transform: scale(1.06); }
+
+        .offre-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 30px 24px 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+        }
+
+        .offre-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            margin-bottom: 8px;
+        }
+
+        .offre-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        .offre-card:first-child .offre-name { font-size: 2.2rem; }
+
+        .offre-price {
+            font-size: 0.9rem;
+            color: rgba(245,245,240,0.7);
+            font-weight: 300;
+        }
+
+        .offre-price strong { color: var(--white); font-weight: 700; }
+
+        /* MARQUES */
+        .marques {
+            padding: 50px 60px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .marques-label {
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .marques-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .marque {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.15);
+            transition: color 0.2s;
+        }
+
+        .marque:hover { color: rgba(255,255,255,0.6); }
+
+        /* PROMO */
+        .promo-banner {
+            margin: 0 60px 80px;
+            background: var(--blue);
+            padding: 50px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-banner::before {
+            content: 'SALE';
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 14rem;
+            color: rgba(255,255,255,0.06);
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .promo-text h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        .promo-text p {
+            font-size: 1rem;
+            opacity: 0.85;
+            margin-top: 8px;
+            font-weight: 300;
+        }
+
+        .btn-white {
+            display: inline-block;
+            background: var(--white);
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 16px 36px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .btn-white:hover { opacity: 0.88; transform: translateY(-2px); }
+
+        /* FOOTER */
+        footer {
+            background: #060606;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            padding: 30px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        footer p { font-size: 0.8rem; color: var(--gray); letter-spacing: 1px; }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            header h1 { font-size: 1.4rem; }
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .hero-content { padding: 0 24px; max-width: 100%; }
+            .hero-image { display: none; }
+            .stats-bar { padding: 16px 20px; flex-wrap: wrap; }
+            .stat { border: none; }
+            .offres { padding: 60px 20px; }
+            .offres-grid { grid-template-columns: 1fr; }
+            .offre-card:first-child { grid-row: span 1; }
+            .promo-banner { margin: 0 20px 60px; padding: 36px 28px; flex-direction: column; align-items: flex-start; }
+            .marques { padding: 40px 20px; }
+            footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>URBAN <span>SHOES</span></h1>
+        <nav>
+            <ul>
+                <li><a href="accueil.html" class="active">Accueil</a></li>
+                <li><a href="produits.html">Produits</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="panier.html" class="nav-panier">🛒 Panier</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="accueil.html" class="active">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="contact.html">Contact</a>
+        <a href="panier.html" class="mobile-panier">🛒 Panier</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <span class="hero-tag">✦ Nouvelle Collection 2026</span>
+            <h2>Step Into <em>The Game</em></h2>
+            <p>Les meilleures sneakers et chaussures urbaines livrées directement chez vous. Qualité premium, style sans compromis.</p>
+            <div class="hero-cta">
+                <a href="produits.html" class="btn-primary">Voir les produits</a>
+                <a href="contact.html" class="btn-secondary">Nous contacter</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="../images/a23.jpeg" alt="Sneakers Urban Shoes">
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="stat-num">200+</span>
+            <span class="stat-label">Modèles disponibles</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">15+</span>
+            <span class="stat-label">Grandes marques</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">24h</span>
+            <span class="stat-label">Livraison rapide</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Satisfait ou remboursé</span>
+        </div>
+    </div>
+
+    <section class="offres">
+        <div class="section-header">
+            <h2 class="section-title">Offres <span>Spéciales</span></h2>
+            <a href="produits.html" class="section-link">Tout voir →</a>
+        </div>
+        <div class="offres-grid">
+            <div class="offre-card">
+                <img src="../images/airjordan1retro.jpeg" alt="Air Jordan 1">
+                <div class="offre-overlay">
+                    <span class="offre-badge">-20%</span>
+                    <span class="offre-name">Air Jordan 1 Retro</span>
+                    <p class="offre-price">À partir de <strong>23 000 Fr CFA</strong></p>
+                </div>
+            </div>
+            <div class="offre-card">
+                <img src="../images/a9.jpeg" alt="New Balance">
+                <div class="offre-overlay">
+                    <span class="offre-badge">Nouveau</span>
+                    <span class="offre-name">New Balance 9060</span>
+                    <p class="offre-price"><strong>22 000 Fr CFA</strong></p>
+                </div>
+            </div>
+            <div class="offre-card">
+                <img src="../images/a2.jpeg" alt="Dior">
+                <div class="offre-overlay">
+                    <span class="offre-badge">Exclusif</span>
+                    <span class="offre-name">Dior B22</span>
+                    <p class="offre-price"><strong>22 000 Fr CFA</strong></p>
+                </div>
+            </div>
+            <div class="offre-card">
+                <img src="../images/a1.jpeg" alt="Asics">
+                <div class="offre-overlay">
+                    <span class="offre-name">Asics Gel-Kayano</span>
+                    <p class="offre-price"><strong>22 000 Fr CFA</strong></p>
+                </div>
+            </div>
+            <div class="offre-card">
+                <img src="../images/a6.jpeg" alt="Gucci">
+                <div class="offre-overlay">
+                    <span class="offre-name">Gucci Loafer</span>
+                    <p class="offre-price"><strong>20 000 Fr CFA</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marques">
+        <p class="marques-label">Nos marques partenaires</p>
+        <div class="marques-list">
+            <span class="marque">NIKE</span>
+            <span class="marque">ADIDAS</span>
+            <span class="marque">JORDAN</span>
+            <span class="marque">DIOR</span>
+            <span class="marque">GUCCI</span>
+            <span class="marque">NEW BALANCE</span>
+            <span class="marque">ASICS</span>
+        </div>
+    </div>
+
+    <div class="promo-banner">
+        <div class="promo-text">
+            <h3>Réductions Tournantes<br>Chaque Semaine !</h3>
+            <p>Profitez de nos offres exclusives avant qu'elles ne disparaissent.</p>
+        </div>
+        <a href="produits.html" class="btn-white">Profiter maintenant</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 URBAN SHOES — Tous droits réservés</p>
+        <span class="footer-logo">URBAN SHOES</span>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            menu.classList.toggle('open');
+            hamburger.classList.toggle('open');
+        }
+
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('open');
+                document.getElementById('hamburger').classList.remove('open');
+            });
+        });
+    </script>
+
+<script>
+(function() {
+  const API = 'https://script.google.com/macros/s/AKfycbzkzSKIx9EHEkj3dMEN8xxXlJlGDEJf3TU0IihoR-jzOgkhhhGcvQEMoGr85_KykvYJ/exec';
+  const pages = {
+    'accueil.html': 'Accueil',
+    'produits.html': 'Produits',
+    'contact.html': 'Contact',
+    'panier.html': 'Panier'
+  };
+  const url = window.location.pathname;
+  const pageName = Object.entries(pages).find(([k]) => url.includes(k))?.[1] || 'Accueil';
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Ordinateur';
+  const nav = navigator.userAgent.includes('Chrome') ? 'Chrome'
+    : navigator.userAgent.includes('Firefox') ? 'Firefox'
+    : navigator.userAgent.includes('Safari') ? 'Safari'
+    : navigator.userAgent.includes('Edge') ? 'Edge' : 'Autre';
+  const now = new Date();
+  fetch(API, {
+    method: 'POST',
+    body: JSON.stringify({
+      date: now.toLocaleDateString('fr-FR'),
+      heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+      page: pageName,
+      appareil: isMobile,
+      navigateur: nav
+    })
+  }).catch(()=>{});
+})();
+</script>
+
+</body>
+</html>
