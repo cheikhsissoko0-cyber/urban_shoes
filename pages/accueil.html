@@ -552,25 +552,66 @@
             .marques { padding: 40px 20px; }
             footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
         }
+        /* Style du compteur de panier */
+        .cart-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 50%;
+            margin-left: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+/* Correction Responsive pour forcer le menu burger plus tôt si besoin */
+@media (max-width: 900px) { /* Augmenté de 768px à 900px */
+    nav { display: none; }
+    .hamburger { display: flex; }
+}
+/* Pour le badge sur PC */
+#cart-count {
+    background-color: white; /* Fond blanc pour bien voir le chiffre */
+    color: black;            /* CHIFFRE EN NOIR */
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;      /* Pour faire un petit cercle */
+    margin-left: 8px;
+    font-size: 0.8rem;
+}
+
+/* Si tu as aussi un badge sur le menu mobile */
+#cart-count-mobile {
+    background-color: white;
+    color: black;            /* CHIFFRE EN NOIR */
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
     </style>
 </head>
 <body>
 
     <header>
-        <h1>URBAN <span>SHOES</span></h1>
-        <nav>
-            <ul>
-                <li><a href="accueil.html" class="active">Accueil</a></li>
-                <li><a href="produits.html">Produits</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="panier.html" class="nav-panier">🛒 Panier</a></li>
-            </ul>
-        </nav>
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <h1>URBAN <span>SHOES</span></h1>
+    <nav>
+        <ul>
+            <li><a href="accueil.html" class="active">Accueil</a></li>
+            <li><a href="produits.html">Produits</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>
+                <a href="panier.html" class="nav-panier">
+                    🛒 Panier <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     </header>
 
     <div class="mobile-menu" id="mobileMenu">
@@ -691,18 +732,36 @@
 
     <script>
         function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const hamburger = document.getElementById('hamburger');
-            menu.classList.toggle('open');
-            hamburger.classList.toggle('open');
-        }
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+}
 
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.remove('open');
-                document.getElementById('hamburger').classList.remove('open');
-            });
-        });
+// CETTE PARTIE GÈRE LE NOMBRE DE PRODUITS
+function updateCartBadge() {
+    // On récupère le panier stocké dans le navigateur
+    const panier = JSON.parse(localStorage.getItem('panier')) || [];
+    const total = panier.length;
+
+    // On met à jour le chiffre sur PC et Mobile s'ils existent
+    const countPC = document.getElementById('cart-count');
+    const countMobile = document.getElementById('cart-count-mobile');
+
+    if(countPC) countPC.innerText = total;
+    if(countMobile) countMobile.innerText = total;
+}
+
+// On lance la mise à jour dès que la page s'affiche
+document.addEventListener('DOMContentLoaded', updateCartBadge);
+
+// Ton code pour fermer le menu quand on clique sur un lien
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+    });
+});
     </script>
 
 <script>

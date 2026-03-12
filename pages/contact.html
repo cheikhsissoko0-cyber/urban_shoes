@@ -196,6 +196,26 @@
             .form-row { grid-template-columns: 1fr; }
             footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
         }
+        /* Pour le badge sur PC */
+#cart-count {
+    background-color: white; /* Fond blanc pour bien voir le chiffre */
+    color: black;            /* CHIFFRE EN NOIR */
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;      /* Pour faire un petit cercle */
+    margin-left: 8px;
+    font-size: 0.8rem;
+}
+
+/* Si tu as aussi un badge sur le menu mobile */
+#cart-count-mobile {
+    background-color: white;
+    color: black;            /* CHIFFRE EN NOIR */
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
     </style>
 </head>
 <body>
@@ -207,7 +227,7 @@
                 <li><a href="accueil.html">Accueil</a></li>
                 <li><a href="produits.html">Produits</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
-                <li><a href="panier.html" class="nav-panier">🛒 Panier</a></li>
+                <li><a href="panier.html" class="nav-panier">🛒 Panier <span id="cart-count">0</span></a></li>
             </ul>
         </nav>
     </header>
@@ -416,6 +436,15 @@
     })
   }).catch(()=>{});
 })();
+
+function updateCartBadge() {
+    const panier = JSON.parse(localStorage.getItem('panier')) || [];
+    const countPC = document.getElementById('cart-count');
+    if(countPC) countPC.innerText = panier.length;
+}
+// Important : On l'appelle dès que la page charge
+window.onload = updateCartBadge; 
+
 </script>
 
 </body>
