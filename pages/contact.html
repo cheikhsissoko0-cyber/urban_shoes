@@ -45,7 +45,58 @@
         nav a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; }
         nav a:hover, nav a.active { color: var(--white); }
         .nav-panier { background: var(--blue); color: var(--white) !important; padding: 8px 20px; border-radius: 2px; }
-        .nav-panier:hover { background: var(--blue-dark) !important; }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 200;
+        }
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0; right: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            z-index: 99;
+            flex-direction: column;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 16px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .mobile-menu .mobile-panier {
+            margin: 16px 30px 6px;
+            background: var(--blue);
+            color: var(--white) !important;
+            text-align: center;
+            padding: 16px;
+            border-radius: 2px;
+        }
 
         .page-hero {
             padding: 120px 60px 60px;
@@ -53,169 +104,34 @@
             position: relative;
             overflow: hidden;
         }
-
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
-            background-size: 60px 60px;
-        }
-
         .page-hero-content { position: relative; z-index: 1; }
         .page-tag { display: inline-block; background: var(--blue); color: var(--white); font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 14px; margin-bottom: 16px; }
         .page-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); letter-spacing: 3px; line-height: 1; }
         .page-hero h2 span { color: var(--blue); }
-        .page-hero p { color: rgba(245,245,240,0.55); font-size: 1rem; margin-top: 12px; font-weight: 300; }
 
         .contact-section { padding: 80px 60px; display: flex; justify-content: center; }
-
-        .contact-wrapper {
-            display: flex;
-            width: 100%;
-            max-width: 1000px;
-            gap: 2px;
-            animation: fadeUp 0.7s ease both;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .contact-info {
-            background: var(--blue);
-            padding: 60px 45px;
-            width: 340px;
-            min-width: 340px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-info::before {
-            content: 'US';
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 18rem;
-            color: rgba(255,255,255,0.05);
-            position: absolute;
-            right: -40px;
-            bottom: -40px;
-            line-height: 1;
-            pointer-events: none;
-        }
-
-        .contact-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 4px; margin-bottom: 12px; }
-        .contact-info > p { font-size: 0.9rem; opacity: 0.8; line-height: 1.7; margin-bottom: 40px; font-weight: 300; }
-
-        .info-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px; position: relative; z-index: 1; }
-        .info-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-        .info-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 3px; }
-        .info-value { font-size: 0.9rem; font-weight: 600; }
-
-        .contact-hours { margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 1; }
-        .contact-hours p { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
-        .contact-hours strong { font-size: 1.1rem; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
-
-        /* Boutons réseaux sociaux */
-        .contact-socials { margin-top: 30px; display: flex; gap: 10px; position: relative; z-index: 1; }
-        .social-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: rgba(255,255,255,0.15); color: var(--white); text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; transition: background 0.2s; border-radius: 2px; }
-        .social-btn:hover { background: rgba(255,255,255,0.3); }
-        .social-btn.whatsapp { background: #25D366; }
-        .social-btn.whatsapp:hover { background: #1aad50; }
-
+        .contact-wrapper { display: flex; width: 100%; max-width: 1000px; gap: 2px; }
+        .contact-info { background: var(--blue); padding: 60px 45px; width: 340px; min-width: 340px; position: relative; overflow: hidden; }
         .contact-form { background: #111; padding: 60px 50px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
-        .contact-form h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 6px; }
-        .contact-form h2 span { color: var(--blue); }
-        .contact-form > p { color: var(--gray); font-size: 0.9rem; margin-bottom: 40px; font-weight: 300; }
 
         .form-group { margin-bottom: 24px; }
-        .form-group label { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
-        .form-group input, .form-group textarea { display: block; width: 100%; padding: 14px 18px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 300; transition: border-color 0.2s; outline: none; }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--blue); }
-        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
-        .form-group textarea { height: 130px; resize: none; }
-
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-        /* ── BOUTONS ENVOI ── */
-        .btns-envoyer { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-
-        .btn-envoyer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px;
-            border: 2px solid;
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s, transform 0.2s;
-        }
-
-        .btn-envoyer:hover { transform: translateY(-2px); }
-
-        .btn-email {
-            background: var(--blue);
-            color: var(--white);
-            border-color: var(--blue);
-        }
-
-        .btn-email:hover { background: transparent; color: var(--blue); }
-
-        .btn-whatsapp {
-            background: #25D366;
-            color: #fff;
-            border-color: #25D366;
-        }
-
-        .btn-whatsapp:hover { background: transparent; color: #25D366; }
-
-        .succes-msg { display: none; margin-top: 16px; padding: 14px 20px; background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.4); color: #4ade80; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-align: center; }
+        .form-group input, .form-group textarea { display: block; width: 100%; padding: 14px 18px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); color: var(--white); outline: none; }
+        .btns-envoyer { display: flex; flex-direction: column; gap: 10px; }
+        .btn-envoyer { width: 100%; padding: 16px; border: 2px solid; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+        .btn-email { background: var(--blue); color: var(--white); border-color: var(--blue); }
+        .btn-whatsapp { background: #25D366; color: #fff; border-color: #25D366; }
 
         footer { background: #060606; border-top: 1px solid rgba(255,255,255,0.07); padding: 30px 60px; display: flex; align-items: center; justify-content: space-between; }
-        footer p { font-size: 0.8rem; color: var(--gray); }
-        .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 4px; color: rgba(255,255,255,0.3); }
+        
+        #cart-count { background-color: white; color: black; font-weight: bold; padding: 2px 6px; border-radius: 50%; margin-left: 8px; font-size: 0.8rem; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             header { padding: 0 20px; }
-            header h1 { font-size: 1.4rem; }
-            nav ul { gap: 16px; }
-            .nav-panier { display: none; }
-            .page-hero { padding: 100px 24px 40px; }
-            .contact-section { padding: 40px 16px; }
+            nav { display: none; }
+            .hamburger { display: flex; }
             .contact-wrapper { flex-direction: column; }
-            .contact-info { width: 100%; min-width: unset; padding: 40px 28px; }
-            .contact-form { padding: 40px 28px; }
-            .form-row { grid-template-columns: 1fr; }
-            footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+            .contact-info { width: 100%; min-width: unset; }
         }
-        /* Pour le badge sur PC */
-#cart-count {
-    background-color: white; /* Fond blanc pour bien voir le chiffre */
-    color: black;            /* CHIFFRE EN NOIR */
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;      /* Pour faire un petit cercle */
-    margin-left: 8px;
-    font-size: 0.8rem;
-}
-
-/* Si tu as aussi un badge sur le menu mobile */
-#cart-count-mobile {
-    background-color: white;
-    color: black;            /* CHIFFRE EN NOIR */
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
-    margin-left: 8px;
-}
     </style>
 </head>
 <body>
@@ -224,13 +140,25 @@
         <h1>URBAN <span>SHOES</span></h1>
         <nav>
             <ul>
-                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="../index.html">Accueil</a></li>
                 <li><a href="produits.html">Produits</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
                 <li><a href="panier.html" class="nav-panier">🛒 Panier <span id="cart-count">0</span></a></li>
             </ul>
         </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../index.html">Accueil</a>
+        <a href="produits.html">Produits</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="panier.html" class="mobile-panier">🛒 Panier</a>
+    </div>
 
     <div class="page-hero">
         <div class="page-hero-content">
@@ -242,210 +170,88 @@
 
     <section class="contact-section">
         <div class="contact-wrapper">
-
             <div class="contact-info">
                 <h3>URBAN SHOES</h3>
-                <p>Nous sommes là pour vous aider. Contactez-nous !</p>
-
-                <div class="info-item">
-                    <div class="info-icon">📍</div>
-                    <div>
-                        <p class="info-label">Adresse</p>
-                        <p class="info-value">Dakar, Sénégal</p>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon">📞</div>
-                    <div>
-                        <p class="info-label">Téléphone</p>
-                        <p class="info-value">+221 71 033 33 70</p>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon">📧</div>
-                    <div>
-                        <p class="info-label">Email</p>
-                        <p class="info-value">cheikhsissoko0@gmail.com</p>
-                    </div>
-                </div>
-
-                <div class="contact-hours">
-                    <p>Horaires d'ouverture</p>
-                    <strong>Lun – Sam : 9h à 18h</strong>
-                </div>
-
-                <!-- Lien WhatsApp direct -->
-                <div class="contact-socials">
-                    <a href="https://wa.me/221710333370" target="_blank" class="social-btn whatsapp">
-                        💬 WhatsApp
-                    </a>
+                <p>📍 Dakar, Sénégal</p>
+                <p>📞 +221 71 033 33 70</p>
+                <p>📧 cheikhsissoko0@gmail.com</p>
+                <div style="margin-top: 20px;">
+                    <a href="https://wa.me/221710333370" target="_blank" style="color: white; text-decoration: none; background: #1aad50; padding: 10px; border-radius: 5px; display: inline-block;">💬 WhatsApp Direct</a>
                 </div>
             </div>
 
             <div class="contact-form">
-                <h2>Envoyez-nous un <span>Message</span></h2>
-                <p>On vous répond dans les plus brefs délais.</p>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Votre Nom</label>
-                        <input id="nom" type="text" placeholder="Ex: Mamadou Diallo">
-                    </div>
-                    <div class="form-group">
-                        <label>Votre Email</label>
-                        <input id="email" type="email" placeholder="Ex: mamadou@gmail.com">
-                    </div>
+                <div class="form-group">
+                    <label>Votre Nom</label>
+                    <input id="nom" type="text" placeholder="Ex: Mamadou Diallo">
                 </div>
-
+                <div class="form-group">
+                    <label>Votre Email</label>
+                    <input id="email" type="email" placeholder="Ex: mamadou@gmail.com">
+                </div>
                 <div class="form-group">
                     <label>Sujet</label>
-                    <input id="sujet" type="text" placeholder="Ex: Commande, livraison...">
+                    <input id="sujet" type="text" placeholder="Ex: Commande">
                 </div>
-
                 <div class="form-group">
                     <label>Votre Message</label>
-                    <textarea id="message" placeholder="Écrivez votre message..."></textarea>
+                    <textarea id="message" placeholder="Écrivez ici..."></textarea>
                 </div>
 
-                <!-- DEUX BOUTONS : Email + WhatsApp -->
                 <div class="btns-envoyer">
-                    <button class="btn-envoyer btn-email" onclick="envoyerEmail()">
-                        📧 &nbsp;Envoyer par Email
-                    </button>
-                    <button class="btn-envoyer btn-whatsapp" onclick="envoyerWhatsApp()">
-                        💬 &nbsp;Envoyer sur WhatsApp
-                    </button>
+                    <button class="btn-envoyer btn-email" onclick="envoyerEmail()">📧 Envoyer par Email</button>
+                    <button class="btn-envoyer btn-whatsapp" onclick="envoyerWhatsApp()">💬 Envoyer sur WhatsApp</button>
                 </div>
-
-                <div class="succes-msg" id="succes"></div>
+                <div id="succes" style="display:none; color: #4ade80; margin-top: 10px;"></div>
             </div>
-
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 URBAN SHOES — Tous droits réservés</p>
+        <p>&copy; 2026 URBAN SHOES</p>
         <span class="footer-logo">URBAN SHOES</span>
     </footer>
 
     <script>
-        // ══════════════════════════════════════════
-        //  REMPLACEZ PAR VOTRE LIEN FORMSPREE
-        //  Créez un compte sur formspree.io
-        //  et collez votre lien ici
-        // ══════════════════════════════════════════
-        const FORMSPREE_URL = 'https://formspree.io/f/xzdjzvpz';
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+            document.getElementById('hamburger').classList.toggle('open');
+        }
 
-        // Votre numéro WhatsApp (format international sans +)
+        function updateCartBadge() {
+            const panier = JSON.parse(localStorage.getItem('panier')) || [];
+            document.getElementById('cart-count').innerText = panier.length;
+        }
+
+        window.onload = updateCartBadge;
+
+        const FORMSPREE_URL = 'https://formspree.io/f/xzdjzvpz';
         const WHATSAPP_NUM = '221710333370';
 
         function valider() {
-            const nom     = document.getElementById('nom').value.trim();
-            const email   = document.getElementById('email').value.trim();
-            const sujet   = document.getElementById('sujet').value.trim();
-            const message = document.getElementById('message').value.trim();
-            if (!nom || !email || !sujet || !message) {
-                alert('⚠️ Veuillez remplir tous les champs !');
-                return null;
-            }
-            return { nom, email, sujet, message };
+            const nom = document.getElementById('nom').value;
+            const email = document.getElementById('email').value;
+            const sujet = document.getElementById('sujet').value;
+            const message = document.getElementById('message').value;
+            if(!nom || !email || !sujet || !message) { alert('Remplissez tout !'); return null; }
+            return {nom, email, sujet, message};
         }
 
-        function viderForm() {
-            document.getElementById('nom').value     = '';
-            document.getElementById('email').value   = '';
-            document.getElementById('sujet').value   = '';
-            document.getElementById('message').value = '';
-        }
-
-        function afficherSucces(texte) {
-            const s = document.getElementById('succes');
-            s.textContent = texte;
-            s.style.display = 'block';
-            setTimeout(() => s.style.display = 'none', 5000);
-        }
-
-        // ── ENVOI PAR EMAIL via Formspree ──
         async function envoyerEmail() {
-            const data = valider();
-            if (!data) return;
-
-            try {
-                const res = await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: data.nom,
-                        email: data.email,
-                        subject: data.sujet,
-                        message: data.message
-                    })
-                });
-
-                if (res.ok) {
-                    viderForm();
-                    afficherSucces('✅ Email envoyé ! Nous vous répondrons bientôt.');
-                } else {
-                    alert('❌ Erreur lors de l\'envoi. Vérifiez votre lien Formspree.');
-                }
-            } catch (e) {
-                alert('❌ Erreur réseau. Vérifiez votre connexion.');
-            }
+            const d = valider(); if(!d) return;
+            const res = await fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(d)
+            });
+            if(res.ok) alert('Email envoyé !');
         }
 
-        // ── ENVOI SUR WHATSAPP ──
         function envoyerWhatsApp() {
-            const data = valider();
-            if (!data) return;
-
-            const texte = `Bonjour Urban Shoes ! 👟\n\n*Nom :* ${data.nom}\n*Email :* ${data.email}\n*Sujet :* ${data.sujet}\n\n*Message :*\n${data.message}`;
-            const url = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(texte)}`;
-            window.open(url, '_blank');
-            viderForm();
-            afficherSucces('✅ Redirection vers WhatsApp...');
+            const d = valider(); if(!d) return;
+            const texte = `Nom: ${d.nom}\nMessage: ${d.message}`;
+            window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(texte)}`, '_blank');
         }
     </script>
-
-<script>
-(function() {
-  const API = 'https://script.google.com/macros/s/AKfycbzkzSKIx9EHEkj3dMEN8xxXlJlGDEJf3TU0IihoR-jzOgkhhhGcvQEMoGr85_KykvYJ/exec';
-  const pages = {
-    'accueil.html': 'Accueil',
-    'produits.html': 'Produits',
-    'contact.html': 'Contact',
-    'panier.html': 'Panier'
-  };
-  const url = window.location.pathname;
-  const pageName = Object.entries(pages).find(([k]) => url.includes(k))?.[1] || 'Accueil';
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Ordinateur';
-  const nav = navigator.userAgent.includes('Chrome') ? 'Chrome'
-    : navigator.userAgent.includes('Firefox') ? 'Firefox'
-    : navigator.userAgent.includes('Safari') ? 'Safari'
-    : navigator.userAgent.includes('Edge') ? 'Edge' : 'Autre';
-  const now = new Date();
-  fetch(API, {
-    method: 'POST',
-    body: JSON.stringify({
-      date: now.toLocaleDateString('fr-FR'),
-      heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
-      page: pageName,
-      appareil: isMobile,
-      navigateur: nav
-    })
-  }).catch(()=>{});
-})();
-
-function updateCartBadge() {
-    const panier = JSON.parse(localStorage.getItem('panier')) || [];
-    const countPC = document.getElementById('cart-count');
-    if(countPC) countPC.innerText = panier.length;
-}
-// Important : On l'appelle dès que la page charge
-window.onload = updateCartBadge; 
-
-</script>
-
 </body>
 </html>

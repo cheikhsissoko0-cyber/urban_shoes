@@ -6,405 +6,46 @@
     <title>Produits | URBAN SHOES</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --black: #0a0a0a;
-            --white: #f5f5f0;
-            --blue: #1a3ef5;
-            --blue-dark: #0f26c0;
-            --accent: #ff2d2d;
-            --gray: #888;
-            --card-bg: #111;
-        }
-
+        /* Ici on remet le même style que l'index pour que le menu burger et le panier s'affichent */
+        :root { --black: #0a0a0a; --white: #f5f5f0; --blue: #1a3ef5; --blue-dark: #0f26c0; --accent: #ff2d2d; --gray: #888; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Barlow', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            overflow-x: hidden;
-        }
-
+        body { font-family: 'Barlow', sans-serif; background: var(--black); color: var(--white); }
+        
         header {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            height: 70px;
-            background: rgba(10,10,10,0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; height: 70px; background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.07);
         }
-
-        header h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 4px;
-            color: var(--white);
-        }
-
+        header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 4px; color: var(--white); }
         header h1 span { color: var(--blue); }
-
         nav ul { display: flex; gap: 36px; list-style: none; }
-
-        nav a {
-            text-decoration: none;
-            color: var(--gray);
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-
+        nav a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
         nav a:hover, nav a.active { color: var(--white); }
+        .nav-panier { background: var(--blue); color: var(--white) !important; padding: 8px 20px; border-radius: 2px; }
+        
+        /* STYLE DU MENU BURGER */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; z-index: 200; }
+        .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); transition: all 0.3s ease; }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        .nav-panier {
-            background: var(--blue);
-            color: var(--white) !important;
-            padding: 8px 20px;
-            border-radius: 2px;
+        .mobile-menu {
+            display: none; position: fixed; top: 70px; left: 0; right: 0;
+            background: rgba(10,10,10,0.98); padding: 20px 0; z-index: 99; flex-direction: column;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { color: var(--gray); padding: 16px 30px; text-decoration: none; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        @media (max-width: 900px) {
+            nav { display: none; }
+            .hamburger { display: flex; }
         }
 
-        .nav-panier:hover { background: var(--blue-dark) !important; color: var(--white) !important; }
+        .cart-badge { background: white; color: black; padding: 2px 6px; border-radius: 50%; margin-left: 8px; font-size: 0.8rem; font-weight: bold; }
 
-        .page-hero {
-            padding: 120px 60px 60px;
-            background: linear-gradient(135deg, #0a0a0a 0%, #0d1a5e 60%, #0a0a0a 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(26,62,245,0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26,62,245,0.07) 1px, transparent 1px);
-            background-size: 60px 60px;
-        }
-
-        .page-hero-content { position: relative; z-index: 1; }
-
-        .page-tag {
-            display: inline-block;
-            background: var(--blue);
-            color: var(--white);
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            padding: 6px 14px;
-            margin-bottom: 16px;
-        }
-
-        .page-hero h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 6vw, 5rem);
-            letter-spacing: 3px;
-            line-height: 1;
-        }
-
-        .page-hero h2 span { color: var(--blue); }
-
-        .page-hero p {
-            color: rgba(245,245,240,0.55);
-            font-size: 1rem;
-            margin-top: 12px;
-            font-weight: 300;
-        }
-
-        .filtres {
-            padding: 30px 60px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            background: #0d0d0d;
-        }
-
-        .filtre-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: var(--gray);
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 8px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filtre-btn:hover, .filtre-btn.active {
-            background: var(--blue);
-            border-color: var(--blue);
-            color: var(--white);
-        }
-
-        .produits-section { padding: 60px; }
-
-        .produits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2px;
-        }
-
-        .produit-card {
-            background: var(--card-bg);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            animation: fadeUp 0.5s ease both;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .produit-card:nth-child(1)  { animation-delay: 0.05s; }
-        .produit-card:nth-child(2)  { animation-delay: 0.10s; }
-        .produit-card:nth-child(3)  { animation-delay: 0.15s; }
-        .produit-card:nth-child(4)  { animation-delay: 0.20s; }
-        .produit-card:nth-child(5)  { animation-delay: 0.25s; }
-        .produit-card:nth-child(6)  { animation-delay: 0.30s; }
-        .produit-card:nth-child(7)  { animation-delay: 0.35s; }
-        .produit-card:nth-child(8)  { animation-delay: 0.40s; }
-        .produit-card:nth-child(9)  { animation-delay: 0.45s; }
-        .produit-card:nth-child(10) { animation-delay: 0.50s; }
-        .produit-card:nth-child(11) { animation-delay: 0.55s; }
-        .produit-card:nth-child(12) { animation-delay: 0.60s; }
-
-        .produit-img-wrap {
-            position: relative;
-            overflow: hidden;
-            height: 240px;
-            background: #161616;
-        }
-
-        .produit-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            display: block;
-        }
-
-        .produit-card:hover .produit-img-wrap img { transform: scale(1.07); }
-
-        .produit-badge {
-            position: absolute;
-            top: 12px; left: 12px;
-            background: var(--accent);
-            color: var(--white);
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            z-index: 2;
-        }
-
-        .produit-badge.new { background: var(--blue); }
-
-        .produit-info {
-            padding: 16px 18px 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .produit-marque {
-            font-size: 0.65rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--blue);
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .produit-nom {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            margin-bottom: 14px;
-        }
-
-        .options-label {
-            font-size: 0.62rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .pointures {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .pointure-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: var(--gray);
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 5px 10px;
-            cursor: pointer;
-            transition: all 0.15s;
-            min-width: 36px;
-            text-align: center;
-        }
-
-        .pointure-btn:hover { border-color: var(--blue); color: var(--white); }
-        .pointure-btn.selected { background: var(--blue); border-color: var(--blue); color: var(--white); }
-
-        .couleurs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .couleur-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .couleur-btn:hover { transform: scale(1.15); }
-        .couleur-btn.selected { border-color: var(--white); transform: scale(1.15); }
-        .couleur-btn.selected::after {
-            content: '✓';
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            color: white;
-            text-shadow: 0 0 3px rgba(0,0,0,0.8);
-        }
-
-        .couleur-nom {
-            font-size: 0.7rem;
-            color: var(--gray);
-            margin-bottom: 14px;
-            min-height: 16px;
-            letter-spacing: 1px;
-        }
-
-        .produit-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .produit-prix { font-size: 1rem; font-weight: 700; }
-
-        .produit-prix-old {
-            font-size: 0.8rem;
-            color: var(--gray);
-            text-decoration: line-through;
-            margin-left: 8px;
-        }
-
-        .btn-panier {
-            background: var(--blue);
-            color: var(--white);
-            border: none;
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
-        }
-
-        .btn-panier:hover { background: var(--blue-dark); }
-
-        .toast {
-            position: fixed;
-            bottom: 30px; left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--blue);
-            color: var(--white);
-            padding: 14px 28px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: transform 0.3s, opacity 0.3s;
-            z-index: 999;
-            opacity: 0;
-            white-space: nowrap;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        footer {
-            background: #060606;
-            border-top: 1px solid rgba(255,255,255,0.07);
-            padding: 30px 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        footer p { font-size: 0.8rem; color: var(--gray); }
-
-        .footer-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
-            letter-spacing: 4px;
-            color: rgba(255,255,255,0.3);
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 0 20px; }
-            header h1 { font-size: 1.4rem; }
-            nav ul { gap: 16px; }
-            .nav-panier { display: none; }
-            .page-hero { padding: 100px 24px 40px; }
-            .filtres { padding: 20px 24px; }
-            .produits-section { padding: 40px 16px; }
-            footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
-        }
-        /* Pour le badge sur PC */
-#cart-count {
-    background-color: white; /* Fond blanc pour bien voir le chiffre */
-    color: black;            /* CHIFFRE EN NOIR */
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;      /* Pour faire un petit cercle */
-    margin-left: 8px;
-    font-size: 0.8rem;
-}
-
-/* Si tu as aussi un badge sur le menu mobile */
-#cart-count-mobile {
-    background-color: white;
-    color: black;            /* CHIFFRE EN NOIR */
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
-    margin-left: 8px;
-}
+        /* TES STYLES SPECIFIQUES A LA PAGE PRODUITS (FILTRES, GRILLE, ETC.) GARDES-LES ICI */
     </style>
 </head>
 <body>
@@ -413,13 +54,29 @@
         <h1>URBAN <span>SHOES</span></h1>
         <nav>
             <ul>
-                <li><a href="accueil.html">Accueil</a></li>
+                <li><a href="../index.html">Accueil</a></li>
                 <li><a href="produits.html" class="active">Produits</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="panier.html" class="nav-panier">🛒 Panier <span id="cart-count">0</span></a></li>
+                <li>
+                    <a href="panier.html" class="nav-panier">
+                        🛒 Panier <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
             </ul>
         </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../index.html">Accueil</a>
+        <a href="produits.html" class="active">Produits</a>
+        <a href="contact.html">Contact</a>
+        <a href="panier.html" class="mobile-panier">🛒 Panier</a>
+    </div>
 
     <div class="page-hero">
         <div class="page-hero-content">
@@ -1362,6 +1019,12 @@ function updateCartBadge() {
 }
 // Important : On l'appelle dès que la page charge
 window.onload = updateCartBadge; 
+ function toggleMenu() {
+     const menu = document.getElementById('mobileMenu');
+     const hamburger = document.getElementById('hamburger');
+     menu.classList.toggle('open');
+     hamburger.classList.toggle('open');
+}
 </script>
 
 </body>
